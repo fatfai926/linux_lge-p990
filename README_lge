@@ -1,0 +1,74 @@
+How to build
+
+1. Android build
+
+(1) Get the android base source code. 
+  - Download the original android source code (Android 2.2.2 Froyo) from http://source.android.com
+  
+(2) Overwrite modules that you want to build. 
+  - Untar opensource packages of star_lgp990_froyo.tar.gz into downloaded android source directory 
+  - And, merge the source into the android source code(froyo)
+
+(3) Run the build scripts. 
+  - You have to add google original prebuilt source(toolchain) before running build scripts. 
+  - Run the following scripts to build android
+    a) . ./build/envsetup.sh                                         
+    b) choosecombo 1 1 generic 1
+    c) make -j4                                                      
+    into the android folder 
+  - If the android is built sucessfully, you will find the outputs in this directory, 
+    "out/target/product/generic". 
+
+
+2. Kernel Build
+
+(1) Untar using following command at the android folder
+  - tar xvfz star_lgp990_kernel.tar.gz
+  
+(2) Execute make.
+  - Set the compile environment
+  - gcc 4.4.3 
+  - Ubuntu 10.04.1
+  - cd kernel
+  - make star_rev_f_android_defconfig ARCH=arm
+  - make ARCH=arm CROSS_COMPILE=../prebuilt/linux-x86/toolchain/arm-eabi-4.3.1/bin/arm-eabi-
+  - make ARCH=arm CROSS_COMPILE=../prebuilt/linux-x86/toolchain/arm-eabi-4.3.1/bin/arm-eabi- zImage
+  - If the kernel is built sucessfully, you will find the build images in this directory, 
+    "arch/arm/boot"
+
+
+How to use dosfsck
+
+1. NAME
+  dosfsck - check and repair MS-DOS file systems
+
+2. build
+  - build with your host PC compiler, eg. arm-gcc
+  - dosfsck needs header files from dosfs.9 (or later) to compile.
+
+3. install
+  - simply just copy output(dosfsck) at your target device
+  - and execute dosfsck with some options
+
+4. usage: dosfsck [-aAflrtvVwy] [-d path -d ...] [-u path -u ...]
+               device
+  -a       automatically repair the file system
+  -A       toggle Atari file system format
+  -d path  drop that file
+  -f       salvage unused chains to files
+  -l       list path names
+  -n       no-op, check non-interactively without changing
+  -p       same as -a, for compat with other *fsck
+  -r       interactively repair the file system
+  -t       test for bad clusters
+  -u path  try to undelete that (non-directory) file
+  -v       verbose mode
+  -V       perform a verification pass
+  -w       write changes to disk immediately
+  -y       same as -a, for compat with other *fsck  
+
+  -example 
+   #/system/bin/dosfsck -v -w -p /dev/block/mmcblk1p1
+
+you can get more information with man page.
+   #man dosfsck
